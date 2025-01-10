@@ -1,0 +1,38 @@
+:root {
+    --ion-background-color: #2c2c2c;
+    --ion-text-color: #fff;
+}
+
+.profile-header {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.avatar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px; /* Espacio entre el avatar y el texto */
+}
+
+ion-avatar {
+    width: 120px;
+    height: 120px;
+}
+
+ion-avatar img {
+    border-radius: 50%;
+    border: 3px solid green;
+}
+
+ion-grid ion-img {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+
+ion-img {
+    border-radius: 15px;
+    overflow: hidden;
+  }
+  
