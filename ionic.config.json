@@ -1,0 +1,7 @@
+{
+  "name": "azaroth",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
