@@ -1,0 +1,193 @@
+<ion-content [fullscreen]="true">
+  <div class="font-[sans-serif]">
+    <div class="flex flex-col items-center justify-start py-6 px-4">
+      <div class="max-w-md w-full">
+        <!-- <h1 class="text-7xl text-center text-[#4B972B] font-bold uppercase mb-5">reuse</h1> -->
+
+        <div class="p-8 rounded-2xl bg-white shadow">
+          <h2 class="text-gray-800 text-center text-2xl font-bold">Crear una cuenta</h2>
+          <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()" class="mt-8 space-y-4">
+            <!-- Name -->
+            <div>
+              <label class="text-gray-800 text-sm mb-2 block">Nombre</label>
+              <div class="relative flex items-center">
+                <input 
+                  formControlName="name" 
+                  type="text" 
+                  required 
+                  class="w-full text-gray-800 bg-white text-sm border border-gray-300 px-4 py-3 rounded-md outline-none"
+                  placeholder="Ingresa tu Nombre" />
+              </div>
+              <small *ngIf="signUpForm.controls['name'].invalid && signUpForm.controls['name'].touched" class="text-red-500">
+                El nombre es obligatorio y debe tener al menos 2 caracteres.
+              </small>
+            </div>
+
+            <!-- Last Name -->
+            <div>
+              <label class="text-gray-800 text-sm mb-2 block">Apellido</label>
+              <div class="relative flex items-center">
+                <input 
+                  formControlName="lastName" 
+                  type="text" 
+                  required 
+                  class="w-full text-gray-800 bg-white text-sm border border-gray-300 px-4 py-3 rounded-md outline-none"
+                  placeholder="Ingresa tu Apellido" />
+              </div>
+              <small *ngIf="signUpForm.controls['lastName'].invalid && signUpForm.controls['lastName'].touched" class="text-red-500">
+                El apellido es obligatorio y debe tener al menos 2 caracteres.
+              </small>
+            </div>
+
+            <!-- Image -->
+            <div>
+              <div class="col-span-full">
+                <label for="cover-photo" class="block text-sm font-medium text-gray-900">Foto de portada</label>
+                <div 
+                  class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10"
+                  (dragover)="onDragOver($event)" 
+                  (drop)="onDrop($event)" 
+                  (dragleave)="onDragLeave($event)"
+                  [class.border-dashed]="!isDragging"
+                  [class.border-solid]="isDragging"
+                  [class.border-green-500]="isDragging"
+                >
+                  <div class="text-center">
+                    <svg class="mx-auto size-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-slot="icon">
+                      <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.061Zm10.125-7.81a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Z" clip-rule="evenodd" />
+                    </svg>
+                    <div class="mt-4 flex text-sm text-gray-600">
+                      <label for="file-upload" class="relative cursor-pointer rounded-md bg-white font-semibold text-[rgb(22,163,74)] focus-within:outline-none focus-within:ring-2">
+                        <span>Subir un archivo</span>
+                        <input id="file-upload" name="file-upload" type="file" class="sr-only" formControlName="image" (change)="onImageSelected($event)">
+                      </label>
+                      <p class="pl-1">o arrastra y suelta</p>
+                    </div>
+                    <p class="text-xs text-gray-600">PNG, JPG, GIF hasta 10MB</p>
+                    
+                    <!-- Vista previa de la imagen -->
+                    <div *ngIf="imagePreview" class="mt-4 flex justify-center relative">
+                      <!-- X para cancelar la imagen -->
+                      <button type="button" (click)="cancelImage()" class="absolute top-0 right-0 text-red-500 text-xl p-1 bg-white rounded-full hover:bg-gray-200">
+                        &times;
+                      </button>
+                      <img [src]="imagePreview" alt="Vista previa de la imagen" class="rounded-lg w-32 h-32 object-cover">
+                    </div>
+            
+                  </div>
+                </div>
+              </div>
+              <small *ngIf="signUpForm.controls['image'].invalid && signUpForm.controls['image'].touched" class="text-red-500">
+                La URL de la imagen no es válida.
+              </small>
+            </div>                              
+
+            <!-- Email -->
+            <div>
+              <label class="text-gray-800 text-sm mb-2 block">Email</label>
+              <div class="relative flex items-center">
+                <input 
+                  formControlName="email" 
+                  type="email" 
+                  required 
+                  class="w-full text-gray-800 bg-white text-sm border border-gray-300 px-4 py-3 rounded-md outline-none"
+                  [ngClass]="{
+                    'outline-green-600': signUpForm.controls['email'].valid, 
+                    'outline-red-600': signUpForm.controls['email'].invalid && signUpForm.controls['email'].touched
+                  }"
+                  placeholder="Ingresa tu Email" />
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb" class="w-4 h-4 absolute right-4" viewBox="0 0 24 24">
+                    <circle cx="10" cy="7" r="6"></circle>
+                    <path d="M14 15H6a5 5 0 0 0-5 5 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 5 5 0 0 0-5-5zm8-4h-2.59l.3-.29a1 1 0 0 0-1.42-1.42l-2 2a1 1 0 0 0 0 1.42l2 2a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42l-.3-.29H22a1 1 0 0 0 0-2z"></path>
+                  </svg>
+              </div>
+              <small *ngIf="signUpForm.controls['email'].hasError('invalidEmail') && signUpForm.controls['email'].touched" class="text-red-500">
+                El correo debe ser una dirección válida (ej. usuario&#64;dominio.com).
+              </small>
+              <small *ngIf="signUpForm.controls['email'].hasError('email') && signUpForm.controls['email'].touched" class="text-red-500">
+                El correo electrónico no tiene un formato válido.
+              </small>                         
+            </div>
+            <!-- Contraseña -->
+            <div>
+              <label class="text-gray-800 text-sm mb-2 block">Contraseña</label>
+              <div class="relative flex items-center">
+                <input 
+                  [type]="passwordVisible ? 'text' : 'password'" 
+                  formControlName="password" 
+                  required 
+                  class="w-full text-gray-800 bg-white text-sm border border-gray-300 px-4 py-3 rounded-md outline-none"
+                  [ngClass]="{
+                    'outline-green-600': signUpForm.get('password')?.valid && isPasswordStrong(signUpForm.get('password')?.value),
+                    'outline-red-600': signUpForm.controls['password'].invalid && signUpForm.controls['password'].touched
+                  }"
+                  placeholder="*********" />
+                <ion-icon 
+                  [name]="passwordVisible ? 'eye-off-outline' : 'eye-outline'" 
+                  class="absolute right-4 cursor-pointer" 
+                  (click)="togglePasswordVisibility('password')"></ion-icon>
+              </div>
+              <small *ngIf="signUpForm.controls['password'].touched && !isPasswordStrong(signUpForm.controls['password'].value)" class="text-red-500">
+                La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un carácter especial.
+              </small>
+            </div>
+
+             <!-- Confirmar Contraseña -->
+            <div>
+              <label class="text-gray-800 text-sm mb-2 block">Confirmar Contraseña</label>
+              <div class="relative flex items-center">
+                <input 
+                  [type]="confirmPasswordVisible ? 'text' : 'password'" 
+                  formControlName="confirmPassword" 
+                  required 
+                  class="w-full text-gray-800 bg-white text-sm border border-gray-300 px-4 py-3 rounded-md outline-none"
+                  [ngClass]="{
+                    'outline-green-600': signUpForm.get('confirmPassword')?.valid && signUpForm.get('confirmPassword')?.value === signUpForm.get('password')?.value,
+                    'outline-red-600': signUpForm.controls['confirmPassword'].invalid && signUpForm.controls['confirmPassword'].touched || signUpForm.get('confirmPassword')?.value !== signUpForm.get('password')?.value
+                  }"
+                  placeholder="*********" />
+                <ion-icon 
+                  [name]="confirmPasswordVisible ? 'eye-off-outline' : 'eye-outline'" 
+                  class="absolute right-4 cursor-pointer" 
+                  (click)="togglePasswordVisibility('confirmPassword')"></ion-icon>
+              </div>
+
+              <!-- Mensaje de error si las contraseñas no coinciden -->
+              <small *ngIf="signUpForm.controls['confirmPassword'].touched && 
+                            signUpForm.controls['confirmPassword'].value !== signUpForm.controls['password'].value" 
+                            class="text-red-500">
+                Las contraseñas no coinciden.
+              </small>
+            </div>
+
+            <!-- Terms and Conditions -->
+            <div class="flex items-center gap-2">
+              <ion-checkbox 
+                formControlName="termsAccepted" 
+                [checked]="signUpForm.get('termsAccepted')?.value"></ion-checkbox>
+              <label class="text-gray-800 text-sm">
+                Acepto los 
+                <a class="text-green-600 hover:underline font-semibold">Términos y Condiciones</a>
+              </label>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="!mt-8">
+              <button 
+                type="submit" 
+                class="w-full py-3 px-4 text-sm tracking-wide rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none">
+                Crear una cuenta
+              </button>
+            </div>
+            <p class="text-gray-800 text-sm !mt-8 text-center">
+              ¿Ya tienes una cuenta? 
+              <a 
+                class="text-green-600 hover:underline ml-1 whitespace-nowrap font-semibold" 
+                routerLink="/login">Inicia sesión aquí</a>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

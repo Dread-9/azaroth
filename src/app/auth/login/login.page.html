@@ -1,0 +1,93 @@
+<ion-content [fullscreen]="true">
+  <div class="font-[sans-serif]">
+    <div class="flex flex-col items-center justify-start py-6 px-4">
+      <div class="max-w-md w-full">
+        <!-- <h1 class="text-7xl text-center text-[#4B972B] font-bold uppercase mb-5">reuse</h1> -->
+
+        <div class="p-8 rounded-2xl bg-white shadow">
+          <h2 class="text-gray-800 text-center text-2xl font-bold">Iniciar Sesión</h2>
+          <form [formGroup]="loginForm"  (ngSubmit)="login()" class="mt-8 space-y-4">
+            <div>
+              <label class="text-gray-800 text-sm mb-2 block">Email</label>
+              <div class="relative flex items-center">
+                <input 
+                  formControlName="email" 
+                  [(ngModel)]="email"
+                  type="email" 
+                  required 
+                  class="w-full text-gray-800 bg-white text-sm border border-gray-300 px-4 py-3 rounded-md outline-none"
+                  [ngClass]="{'outline-green-600': loginForm.controls['email'].valid, 'outline-red-600': loginForm.controls['email'].invalid && loginForm.controls['email'].touched}"
+                  placeholder="Ingresa tu Email" />
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb" class="w-4 h-4 absolute right-4" viewBox="0 0 24 24">
+                    <circle cx="10" cy="7" r="6"></circle>
+                    <path d="M14 15H6a5 5 0 0 0-5 5 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 5 5 0 0 0-5-5zm8-4h-2.59l.3-.29a1 1 0 0 0-1.42-1.42l-2 2a1 1 0 0 0 0 1.42l2 2a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42l-.3-.29H22a1 1 0 0 0 0-2z"></path>
+                  </svg>
+              </div>
+            </div>
+
+            <div>
+              <label class="text-gray-800 text-sm mb-2 block">Contraseña</label>
+              <div class="relative flex items-center">
+                <input 
+                  formControlName="password" 
+                  [(ngModel)]="password"
+                  [type]="passwordVisible ? 'text' : 'password'"
+                  required 
+                  class="w-full text-gray-800 bg-white text-sm border border-gray-300 px-4 py-3 rounded-md outline-none"
+                  [ngClass]="{'outline-green-600': loginForm.controls['password'].valid, 'outline-red-600': loginForm.controls['password'].invalid && loginForm.controls['password'].touched}"
+                  placeholder="Ingresa tu contraseña" />
+                
+                <!-- Icono que cambia según la visibilidad de la contraseña -->
+                <svg *ngIf="!passwordVisible"
+                        xmlns="http://www.w3.org/2000/svg" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        class="w-4 h-4 absolute right-4 cursor-pointer" 
+                        viewBox="0 0 24 24" 
+                        stroke-width="2" 
+                        stroke-linecap="round" 
+                        stroke-linejoin="round" 
+                        (click)="togglePasswordVisibility()">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M21 9c-2.4 2.667 -5.4 4 -9 4c-3.6 0 -6.6 -1.333 -9 -4" />
+                    <path d="M3 15l2.5 -3.8" />
+                    <path d="M21 14.976l-2.492 -3.776" />
+                    <path d="M9 17l.5 -4" />
+                    <path d="M15 17l-.5 -4" />
+                </svg>
+                
+                <svg *ngIf="passwordVisible" 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    fill="#bbb" 
+                    stroke="#bbb" 
+                    class="w-4 h-4 absolute right-4 cursor-pointer" 
+                    viewBox="0 0 128 128" 
+                    (click)="togglePasswordVisibility()">
+                  <path d="M64 104C22.127 104 1.367 67.496.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24s62.633 36.504 63.496 38.057a4 4 0 0 1 0 3.887C126.633 67.496 105.873 104 64 104zM8.707 63.994C13.465 71.205 32.146 96 64 96c31.955 0 50.553-24.775 55.293-31.994C114.535 56.795 95.854 32 64 32 32.045 32 13.447 56.775 8.707 63.994zM64 88c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm0-40c-8.822 0-16 7.178-16 16s7.178 16 16 16 16-7.178 16-16-7.178-16-16-16z"></path>
+                </svg>
+              </div>
+            </div>            
+
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <div class="flex items-end">
+                <ion-checkbox formControlName="rememberMe" labelPlacement="end">Recuerdame</ion-checkbox>
+              </div>              
+              <div class="text-sm">
+                <a href="javascript:void(0);" class="text-green-600 hover:underline font-semibold" routerLink="/recover-password">
+                  ¿Olvidaste tu contraseña?
+                </a>
+              </div>
+            </div>
+
+            <div class="!mt-8">
+              <button type="submit" class="w-full py-3 px-4 text-sm tracking-wide rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none">
+                Iniciar Sesión
+              </button>
+            </div>
+            <p class="text-gray-800 text-sm !mt-8 text-center">¿No tienes una cuenta? <a href="javascript:void(0);" class="text-green-600 hover:underline ml-1 whitespace-nowrap font-semibold" routerLink="/sign-up"  >Regístrate aquí</a></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
